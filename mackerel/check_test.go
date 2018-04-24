@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mackerelio/mackerel-agent/checks"
+	"github.com/7474/mackerel-agent/checks"
 )
 
 func TestReportCheckMonitors(t *testing.T) {

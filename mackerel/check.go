@@ -3,7 +3,7 @@ package mackerel
 import (
 	"encoding/json"
 
-	"github.com/mackerelio/mackerel-agent/checks"
+	"github.com/7474/mackerel-agent/checks"
 )
 
 type monitoringChecksPayload struct {

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mackerelio/mackerel-agent/metrics"
+	"github.com/7474/mackerel-agent/metrics"
 )
 
 func TestDiskGenerator(t *testing.T) {

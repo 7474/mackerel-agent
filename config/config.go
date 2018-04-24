@@ -12,7 +12,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/cmdutil"
+	"github.com/7474/mackerel-agent/cmdutil"
 	"github.com/pkg/errors"
 )
 

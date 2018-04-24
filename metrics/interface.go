@@ -8,7 +8,7 @@ import (
 
 	"github.com/mackerelio/go-osstat/network"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/util"
+	"github.com/7474/mackerel-agent/util"
 )
 
 /*

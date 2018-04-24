@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mackerelio/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/config"
 )
 
 func TestMetadataGeneratorFetch(t *testing.T) {

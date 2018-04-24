@@ -2,7 +2,7 @@
 
 package netbsd
 
-import "github.com/mackerelio/mackerel-agent/spec"
+import "github.com/7474/mackerel-agent/spec"
 
 // InterfaceGenerator XXX
 type InterfaceGenerator struct {

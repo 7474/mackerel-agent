@@ -1,11 +1,11 @@
 package command
 
 import (
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/metrics"
-	metricsDarwin "github.com/mackerelio/mackerel-agent/metrics/darwin"
-	"github.com/mackerelio/mackerel-agent/spec"
-	specDarwin "github.com/mackerelio/mackerel-agent/spec/darwin"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/metrics"
+	metricsDarwin "github.com/7474/mackerel-agent/metrics/darwin"
+	"github.com/7474/mackerel-agent/spec"
+	specDarwin "github.com/7474/mackerel-agent/spec/darwin"
 )
 
 func specGenerators() []spec.Generator {

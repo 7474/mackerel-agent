@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/util/windows"
+	"github.com/7474/mackerel-agent/util/windows"
 )
 
 // KernelGenerator XXX

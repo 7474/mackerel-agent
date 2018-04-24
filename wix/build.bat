@@ -13,7 +13,7 @@ CALL build.bat
 CALL build-k.bat
 
 go get -d github.com/mackerelio/go-check-plugins/...
-go get -d github.com/mackerelio/mackerel-agent-plugins/...
+go get -d github.com/7474/mackerel-agent-plugins/...
 go get -d github.com/mackerelio/mkr/...
 
 FOR /F %%w in (.\wix\pluginlist.txt) DO (
@@ -22,9 +22,9 @@ FOR /F %%w in (.\wix\pluginlist.txt) DO (
 
 CD %~dp0
 
-go get github.com/mackerelio/mackerel-agent/wix/wrapper
-go get github.com/mackerelio/mackerel-agent/wix/replace
-go get github.com/mackerelio/mackerel-agent/wix/generate_wxs
+go get github.com/7474/mackerel-agent/wix/wrapper
+go get github.com/7474/mackerel-agent/wix/replace
+go get github.com/7474/mackerel-agent/wix/generate_wxs
 
 go build -o ..\build\wrapper.exe wrapper\wrapper_windows.go wrapper\install.go
 

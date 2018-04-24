@@ -8,7 +8,7 @@ import (
 
 	"github.com/StackExchange/wmi"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/metrics"
+	"github.com/7474/mackerel-agent/metrics"
 )
 
 // DiskGenerator XXX

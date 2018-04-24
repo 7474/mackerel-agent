@@ -11,10 +11,10 @@ import (
 
 	"github.com/Songmu/prompter"
 	"github.com/Songmu/retry"
-	"github.com/mackerelio/mackerel-agent/command"
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/pidfile"
-	"github.com/mackerelio/mackerel-agent/supervisor"
+	"github.com/7474/mackerel-agent/command"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/pidfile"
+	"github.com/7474/mackerel-agent/supervisor"
 )
 
 /* +main - mackerel-agent

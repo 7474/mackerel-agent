@@ -35,12 +35,12 @@ Build and Run the mackerel-agent.
 You can run the following commands instead of using `make`.
 
 ```console
-% go get -d github.com/mackerelio/mackerel-agent
+% go get -d github.com/7474/mackerel-agent
 % go build -o build/mackerel-agent \
   -ldflags="\
-    -X github.com/mackerelio/mackerel-agent/version.GITCOMMIT `git rev-parse --short HEAD` \
-    -X github.com/mackerelio/mackerel-agent/version.VERSION   `git describe --tags --abbrev=0 | sed 's/^v//' | sed 's/\+.*$$//'` " \
-  github.com/mackerelio/mackerel-agent
+    -X github.com/7474/mackerel-agent/version.GITCOMMIT `git rev-parse --short HEAD` \
+    -X github.com/7474/mackerel-agent/version.VERSION   `git describe --tags --abbrev=0 | sed 's/^v//' | sed 's/\+.*$$//'` " \
+  github.com/7474/mackerel-agent
 ./build/mackerel-agent -conf=mackerel-agent.conf
 ```
 

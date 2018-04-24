@@ -12,11 +12,11 @@ import (
 	"time"
 
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/agent"
-	"github.com/mackerelio/mackerel-agent/checks"
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/mackerel"
-	"github.com/mackerelio/mackerel-agent/metrics"
+	"github.com/7474/mackerel-agent/agent"
+	"github.com/7474/mackerel-agent/checks"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/mackerel"
+	"github.com/7474/mackerel-agent/metrics"
 )
 
 func TestDelayByHost(t *testing.T) {

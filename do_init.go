@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/mackerelio/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/config"
 )
 
 func doInitialize(fs *flag.FlagSet, argv []string) error {
