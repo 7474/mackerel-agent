@@ -11,10 +11,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/7474/mackerel-agent/command"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/pidfile"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/command"
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/pidfile"
 	"github.com/motemen/go-cli"
 )
 
@@ -169,6 +169,7 @@ func setLogLevel(silent, verbose bool) {
 func start(conf *config.Config, termCh chan struct{}) error {
 	setLogLevel(conf.Silent, conf.Verbose)
 	logger.Infof("Starting mackerel-agent version:%s, rev:%s, apibase:%s", version, gitcommit, conf.Apibase)
+	logger.Infof("APIClientType:%s", conf.APIClientType)
 
 	if err := pidfile.Create(conf.Pidfile); err != nil {
 		return fmt.Errorf("pidfile.Create(%q) failed: %s", conf.Pidfile, err)

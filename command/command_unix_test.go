@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/mackerel"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/mackerel"
 )
 
 var diceCommand = "../example/metrics-plugins/dice-with-meta.rb"

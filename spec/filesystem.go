@@ -5,7 +5,7 @@ package spec
 import (
 	"fmt"
 
-	"github.com/mackerelio/mackerel-agent/util"
+	"github.com/7474/mackerel-agent/util"
 )
 
 // FilesystemGenerator generator for filesystems implements spec.Generator interface

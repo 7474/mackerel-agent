@@ -3,7 +3,7 @@ package agent
 import (
 	"testing"
 
-	"github.com/mackerelio/mackerel-agent/metrics"
+	"github.com/7474/mackerel-agent/metrics"
 )
 
 type testGenerator struct{}

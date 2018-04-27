@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mackerelio/mackerel-agent/pidfile"
+	"github.com/7474/mackerel-agent/pidfile"
 )
 
 const stubAgent = "testdata/stub-agent"

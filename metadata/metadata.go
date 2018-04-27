@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/config"
 )
 
 var logger = logging.GetLogger("metadata")

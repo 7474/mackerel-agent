@@ -9,12 +9,12 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/7474/mackerel-agent/command"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/pidfile"
+	"github.com/7474/mackerel-agent/supervisor"
 	"github.com/Songmu/prompter"
 	"github.com/Songmu/retry"
-	"github.com/mackerelio/mackerel-agent/command"
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/pidfile"
-	"github.com/mackerelio/mackerel-agent/supervisor"
 )
 
 /* +main - mackerel-agent
@@ -125,7 +125,7 @@ func doRetire(fs *flag.FlagSet, argv []string) error {
 		return fmt.Errorf("hostID file is not found or empty")
 	}
 
-	api, err := command.NewMackerelClient(conf.Apibase, conf.Apikey, version, gitcommit, conf.Verbose)
+	api, err := command.NewApiClient(conf, &command.AgentMeta{Version: version, Revision: gitcommit})
 	if err != nil {
 		return fmt.Errorf("faild to create api client: %s", err)
 	}

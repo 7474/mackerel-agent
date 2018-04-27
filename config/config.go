@@ -10,9 +10,9 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/7474/mackerel-agent/cmdutil"
 	"github.com/BurntSushi/toml"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/cmdutil"
 	"github.com/pkg/errors"
 )
 
@@ -120,6 +120,10 @@ type Config struct {
 	Filesystems   Filesystems   `toml:"filesystems"`
 	HTTPProxy     string        `toml:"http_proxy"`
 	CloudPlatform CloudPlatform `toml:"cloud_platform"`
+
+	// 7474 Custom items
+	APIClientType     string
+	CustomHTTPHeaders map[string]string
 
 	// This Plugin field is used to decode the toml file. After reading the
 	// configuration from file, this field is set to nil.

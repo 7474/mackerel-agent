@@ -3,7 +3,7 @@ package metrics
 import (
 	"runtime"
 
-	"github.com/mackerelio/mackerel-agent/mackerel"
+	"github.com/7474/mackerel-agent/mackerel"
 )
 
 // AgentGenerator is generator of metrics

@@ -4,8 +4,8 @@ Priority: extra
 Maintainer: Hatena <mackerel-developers@hatena.ne.jp>
 Build-Depends: debhelper (>= 9), dh-systemd
 Standards-Version: 3.9.6
-Vcs-Browser: https://github.com/mackerelio/mackerel-agent
-Vcs-Git: https://github.com/mackerelio/mackerel-agent.git
+Vcs-Browser: https://github.com/7474/mackerel-agent
+Vcs-Git: https://github.com/7474/mackerel-agent.git
 Homepage: https://mackerel.io
 
 Package: mackerel-agent

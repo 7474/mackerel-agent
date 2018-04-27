@@ -8,7 +8,7 @@ import (
 	"unsafe"
 )
 
-// ref. https://github.com/mackerelio/mackerel-agent/pull/134
+// ref. https://github.com/7474/mackerel-agent/pull/134
 
 /*
 //#include <pdh.h>

@@ -9,14 +9,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/7474/mackerel-agent/agent"
+	"github.com/7474/mackerel-agent/checks"
+	"github.com/7474/mackerel-agent/config"
+	"github.com/7474/mackerel-agent/mackerel"
+	"github.com/7474/mackerel-agent/metrics"
+	"github.com/7474/mackerel-agent/spec"
 	"github.com/Songmu/retry"
 	"github.com/mackerelio/golib/logging"
-	"github.com/mackerelio/mackerel-agent/agent"
-	"github.com/mackerelio/mackerel-agent/checks"
-	"github.com/mackerelio/mackerel-agent/config"
-	"github.com/mackerelio/mackerel-agent/mackerel"
-	"github.com/mackerelio/mackerel-agent/metrics"
-	"github.com/mackerelio/mackerel-agent/spec"
 )
 
 var logger = logging.GetLogger("command")
@@ -615,8 +615,24 @@ func buildUA(ver, rev string) string {
 	return fmt.Sprintf("mackerel-agent/%s (Revision %s)", ver, rev)
 }
 
+func buildCustomHttpUA(ver, rev string) string {
+	return fmt.Sprintf("7474/mackerel-agent/%s (Revision %s)", ver, rev)
+}
+
+// NewApiClient returns configured Mackerel API client
+func NewApiClient(conf *config.Config, ameta *AgentMeta) (*mackerel.API, error) {
+	if conf.APIClientType == "custom-http" {
+		return NewCustomHttpClient(conf.Apibase, conf.Apikey, ameta.Version, ameta.Revision, conf.Verbose, conf.CustomHTTPHeaders)
+	}
+	return NewMackerelClient(conf.Apibase, conf.Apikey, ameta.Version, ameta.Revision, conf.Verbose)
+}
+
 // NewMackerelClient returns Mackerel API client for mackerel-agent
 func NewMackerelClient(apibase, apikey, ver, rev string, verbose bool) (*mackerel.API, error) {
+	logger.Debugf("NewMackerelClient")
+	if apibase != config.DefaultConfig.Apibase {
+		return nil, fmt.Errorf("If default API client. Please also default to API base.")
+	}
 	api, err := mackerel.NewAPI(apibase, apikey, verbose)
 	if err != nil {
 		return nil, err
@@ -628,10 +644,30 @@ func NewMackerelClient(apibase, apikey, ver, rev string, verbose bool) (*mackere
 	return api, nil
 }
 
+// NewCustomHttpClient returns Custom HTTP API client
+func NewCustomHttpClient(apibase, apikey, ver, rev string, verbose bool, headers map[string]string) (*mackerel.API, error) {
+	logger.Debugf("NewCustomHttpClient")
+	api, err := mackerel.NewAPI(apibase, apikey, verbose)
+	if err != nil {
+		return nil, err
+	}
+	api.UA = buildCustomHttpUA(ver, rev)
+	api.DefaultHeaders = http.Header{}
+	api.DefaultHeaders.Add("X-Agent-Version", ver)
+	api.DefaultHeaders.Add("X-Revision", rev)
+	for k, v := range headers {
+		logger.Debugf("headers %s: %s", k, v)
+		api.DefaultHeaders.Add(k, v)
+	}
+	// XXX 当面APIKeyは破棄しておく
+	api.APIKey = "-"
+	return api, nil
+}
+
 // Prepare sets up API and registers the host data to the Mackerel server.
 // Use returned values to call Run().
 func Prepare(conf *config.Config, ameta *AgentMeta) (*App, error) {
-	api, err := NewMackerelClient(conf.Apibase, conf.Apikey, ameta.Version, ameta.Revision, conf.Verbose)
+	api, err := NewApiClient(conf, ameta)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare an api: %s", err.Error())
 	}
