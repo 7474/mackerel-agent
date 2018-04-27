@@ -124,6 +124,8 @@ type Config struct {
 	// 7474 Custom items
 	APIClientType     string
 	CustomHTTPHeaders map[string]string
+	CustomCert        CertConfig
+	EmulateGet        bool
 
 	// This Plugin field is used to decode the toml file. After reading the
 	// configuration from file, this field is set to nil.
@@ -137,6 +139,13 @@ type Config struct {
 	MetricPlugins   map[string]*MetricPlugin
 	CheckPlugins    map[string]*CheckPlugin
 	MetadataPlugins map[string]*MetadataPlugin
+}
+
+// X509 cert configuration.
+type CertConfig struct {
+	Cacert string
+	Cert   string
+	Key    string
 }
 
 // PluginConfig represents a plugin configuration.

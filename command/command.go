@@ -621,8 +621,8 @@ func buildCustomHttpUA(ver, rev string) string {
 
 // NewApiClient returns configured Mackerel API client
 func NewApiClient(conf *config.Config, ameta *AgentMeta) (*mackerel.API, error) {
-	if conf.APIClientType == "custom-http" {
-		return NewCustomHttpClient(conf.Apibase, conf.Apikey, ameta.Version, ameta.Revision, conf.Verbose, conf.CustomHTTPHeaders)
+	if conf.APIClientType == "custom-http" || conf.APIClientType == "aws-iot-http" {
+		return NewCustomHttpClient(conf, ameta)
 	}
 	return NewMackerelClient(conf.Apibase, conf.Apikey, ameta.Version, ameta.Revision, conf.Verbose)
 }
@@ -645,12 +645,20 @@ func NewMackerelClient(apibase, apikey, ver, rev string, verbose bool) (*mackere
 }
 
 // NewCustomHttpClient returns Custom HTTP API client
-func NewCustomHttpClient(apibase, apikey, ver, rev string, verbose bool, headers map[string]string) (*mackerel.API, error) {
+func NewCustomHttpClient(conf *config.Config, ameta *AgentMeta) (*mackerel.API, error) {
 	logger.Debugf("NewCustomHttpClient")
-	api, err := mackerel.NewAPI(apibase, apikey, verbose)
+	apibase := conf.Apibase
+	verbose := conf.Verbose
+	ver := ameta.Version
+	rev := ameta.Revision
+	headers := conf.CustomHTTPHeaders
+	// APIKeyは無視する
+	api, err := mackerel.NewAPI(apibase, "-", verbose)
 	if err != nil {
 		return nil, err
 	}
+	api.EmulateGet = conf.EmulateGet
+	api.CustomCert = conf.CustomCert
 	api.UA = buildCustomHttpUA(ver, rev)
 	api.DefaultHeaders = http.Header{}
 	api.DefaultHeaders.Add("X-Agent-Version", ver)
@@ -659,8 +667,6 @@ func NewCustomHttpClient(apibase, apikey, ver, rev string, verbose bool, headers
 		logger.Debugf("headers %s: %s", k, v)
 		api.DefaultHeaders.Add(k, v)
 	}
-	// XXX 当面APIKeyは破棄しておく
-	api.APIKey = "-"
 	return api, nil
 }
 

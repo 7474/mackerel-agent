@@ -2,13 +2,19 @@ package mackerel
 
 import (
 	"bytes"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"time"
 
+	"github.com/7474/mackerel-agent/config"
+	"github.com/jarcoal/httpmock"
 	"github.com/mackerelio/golib/logging"
 )
 
@@ -29,6 +35,8 @@ type API struct {
 	Verbose        bool
 	UA             string
 	DefaultHeaders http.Header
+	CustomCert     config.CertConfig
+	EmulateGet     bool
 }
 
 // Error represents API error
@@ -84,7 +92,8 @@ func NewAPI(rawurl string, apiKey string, verbose bool) (*API, error) {
 
 func (api *API) urlFor(path string, query string) *url.URL {
 	newURL, _ := url.Parse(api.BaseURL.String())
-	newURL.Path = path
+	// newURL.Path = path
+	newURL.Path = newURL.Path + path
 	newURL.RawQuery = query
 	return newURL
 }
@@ -99,6 +108,10 @@ func (api *API) getUA() string {
 var apiRequestTimeout = 30 * time.Second
 
 func (api *API) do(req *http.Request) (resp *http.Response, err error) {
+	return api.doHTTP(req)
+}
+
+func (api *API) doHTTP(req *http.Request) (resp *http.Response, err error) {
 	if api.DefaultHeaders != nil {
 		for k, vs := range api.DefaultHeaders {
 			for _, v := range vs {
@@ -116,7 +129,35 @@ func (api *API) do(req *http.Request) (resp *http.Response, err error) {
 		}
 	}
 
-	client := &http.Client{} // same as http.DefaultClient
+	var client = &http.Client{} // same as http.DefaultClient
+	if api.CustomCert.Cert != "" {
+		logger.Debugf("x509 %s", api.CustomCert.Cert)
+		// https://gist.github.com/michaljemala/d6f4e01c4834bf47a9c4
+		// Load client cert
+		cert, err := tls.LoadX509KeyPair(api.CustomCert.Cert, api.CustomCert.Key)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Load CA cert
+		caCert, err := ioutil.ReadFile(api.CustomCert.Cacert)
+		if err != nil {
+			log.Fatal(err)
+		}
+		caCertPool := x509.NewCertPool()
+		caCertPool.AppendCertsFromPEM(caCert)
+
+		// Setup HTTPS client
+		tlsConfig := &tls.Config{
+			Certificates: []tls.Certificate{cert},
+			RootCAs:      caCertPool,
+		}
+		tlsConfig.BuildNameToCertificate()
+		tlsConfig.MinVersion = tls.VersionTLS12
+		transport := &http.Transport{TLSClientConfig: tlsConfig}
+		client = &http.Client{Transport: transport}
+	}
+
 	client.Timeout = apiRequestTimeout
 	resp, err = client.Do(req)
 	if err != nil {
@@ -139,6 +180,9 @@ func closeResp(resp *http.Response) {
 
 // FindHost find the host
 func (api *API) FindHost(id string) (*Host, error) {
+	if api.EmulateGet {
+		return &Host{ID: id}, nil
+	}
 	resp, err := api.get(fmt.Sprintf("/api/v0/hosts/%s", id), "")
 	defer closeResp(resp)
 	if err != nil {
@@ -293,7 +337,9 @@ func (api *API) get(path string, query string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return api.do(req)
+	// FIXME
+	return httpmock.NewJsonResponse(200, req.Form)
+	// return api.do(req)
 }
 
 func (api *API) requestJSON(method, path string, payload interface{}) (*http.Response, error) {
